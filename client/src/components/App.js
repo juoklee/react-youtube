@@ -13,6 +13,7 @@ import VideoUploadPage from './views/VideoUploadPage/VideoUploadPage';
 //true   only logged in user can go inside
 //false  logged in user can't go inside
 
+
 //2.업로드 페이지 라우터 생성완료
 function App() {
   return (
