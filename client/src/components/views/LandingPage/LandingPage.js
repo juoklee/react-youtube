@@ -27,7 +27,7 @@ function LandingPage() {
 
     }, [])
 
-    //비디오 카드: 화면에 출력하기
+    //비디오 카드: 화면에 출력하기 map() methods
     const renderCards = Videos.map((video, index) => {
 
         var minutes = Math.floor(video.duration / 60);
