@@ -5,6 +5,7 @@ const router = express.Router();
 const { auth } = require("../middleware/auth");
 const multer = require("multer");
 const ffmpeg = require('fluent-ffmpeg');
+const { Video } = require('../models/Video');
 
 
 //Storage Multer Config
@@ -30,12 +31,13 @@ var upload = multer({ storage: storage }).single("file")
 //             Video
 //=================================
 
+//1. 비디오 저장
 router.post('/uploadfiles', (req, res) => {
 
     //비디오를 서버에 저장한다.
     upload(req, res, err => {
         if(err) {
-            return res.json({ success: false, err})
+            return res.json({ success: false, err })
         }
         return res.json({ success: true, filePath: res.req.file.path, fileName:res.req.file.filename })
     })
@@ -43,6 +45,7 @@ router.post('/uploadfiles', (req, res) => {
 })
 
 
+//2.비디오 썸네일
 router.post('/thumbnail', (req, res) => { //썸네일을 생성하고 비디오 정보 가져오기
 
     let thumbsFilePath ="";
@@ -74,6 +77,22 @@ router.post('/thumbnail', (req, res) => { //썸네일을 생성하고 비디오 
             // %b input basename ( filename w/o extension )
             filename:'thumbnail-%b.png'
         });
+
+})
+
+
+//3.비디오 업로드
+router.post('/uploadVideo', (req, res) => {
+
+    //비디오 정보들을 저장한다.
+    const video = new Video(req.body)
+
+    video.save((err, video)=> {
+        if(err) return res.status(400).json({ success: false, err })
+        return res.status(200).json({
+            success: true 
+        })
+    }) 
 
 })
 
