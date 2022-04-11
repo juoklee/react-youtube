@@ -96,4 +96,25 @@ router.post('/uploadVideo', (req, res) => {
 
 })
 
+
+
+//4. 랜딩페이지에 비디오 나타나게 하기
+router.get('/getVideos', (req, res) => {
+
+    //비디오를 DB에서 가져와서 클라이언트에 보낸다.
+    Video.find() //모든 비디오를 가져옴
+    .populate('writer')
+    .exec((err, videos) => {
+        if(err) return res.status(400).send(err);
+        res.status(200).json({ success: true, videos })
+    })
+
+
+
+})
+
+
+
+
+
 module.exports = router;
