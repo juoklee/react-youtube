@@ -1,6 +1,5 @@
 const express = require('express');
 const router = express.Router();
-//const { Video } = require("../models/Video");
 
 const { auth } = require("../middleware/auth");
 const multer = require("multer");
@@ -109,9 +108,23 @@ router.get('/getVideos', (req, res) => {
         res.status(200).json({ success: true, videos })
     })
 
+})
+
+
+
+//5. 비디오 디테일 페이지 route
+router.post('/getVideoDetail', (req, res) => {
+    Video.findOne({ "_id" : req.body.videoId }) //id를 이용해서 비디오를 찾겠다.
+    .populate('writer')
+    .exec((err, videoDetail) => { //callback function err와 videoDetail 정보 가져오기
+        if(err) return res.status(400).send(err) //err 발생시 err 메세지
+        return res.status(200).json({ success: true, videoDetail}) //json형태로 정보를 클라이언트로 보내기 
+    })
 
 
 })
+
+
 
 
 

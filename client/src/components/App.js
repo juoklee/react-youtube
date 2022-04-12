@@ -8,13 +8,13 @@ import RegisterPage from "./views/RegisterPage/RegisterPage.js";
 import NavBar from "./views/NavBar/NavBar";
 import Footer from "./views/Footer/Footer"
 import VideoUploadPage from './views/VideoUploadPage/VideoUploadPage';
-
+import VideoDetailPage from './views/VideoDetailPage/VideoDetailPage';
 //null   Anyone Can go inside
 //true   only logged in user can go inside
 //false  logged in user can't go inside
 
 
-//2.업로드 페이지 라우터 생성완료
+//라우터 생성하기
 function App() {
   return (
     <Suspense fallback={(<div>Loading...</div>)}>
@@ -25,9 +25,10 @@ function App() {
           <Route exact path="/login" component={Auth(LoginPage, false)} />
           <Route exact path="/register" component={Auth(RegisterPage, false)} />
           <Route exact path="/video/upload" component={Auth(VideoUploadPage, true)} />
+          <Route exact path="/video/:videoId" component={Auth(VideoDetailPage, null)} />
         </Switch>
       </div>
-      <Footer />
+      <Footer />x 
     </Suspense>
   );
 }
