@@ -20,6 +20,7 @@ function SideVideo() {
 
     }, [])
 
+    //map method: 화면에 여러개의 화면을 띄우기 위해서 -> 배열 내장 함수를 통해 컴포넌트 반복
     const renderSidevideo = sideVideos.map((video, index) => {
 
         var minutes = Math.floor(video.duration / 60);
@@ -44,13 +45,13 @@ function SideVideo() {
         </div>
     })
 
-    //map method: 화면에 여러개의 화면을 띄우기 위해서
+    
     return (
 
         <React.Fragment>
             <div style={{ marginTop:'3rem' }}></div>
             {renderSidevideo}
-            
+
         </React.Fragment>     
     )
 }
