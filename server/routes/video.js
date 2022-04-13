@@ -1,10 +1,11 @@
 const express = require('express');
 const router = express.Router();
-
-const { auth } = require("../middleware/auth");
 const multer = require("multer");
 const ffmpeg = require('fluent-ffmpeg');
+
+const { auth } = require("../middleware/auth");
 const { Video } = require('../models/Video');
+const { Subscriber} = require('../models/Subscriber');
 
 
 //Storage Multer Config
@@ -120,12 +121,35 @@ router.post('/getVideoDetail', (req, res) => {
         if(err) return res.status(400).send(err) //err 발생시 err 메세지
         return res.status(200).json({ success: true, videoDetail}) //json형태로 정보를 클라이언트로 보내기 
     })
-
-
 })
 
 
+//6. 구독 비디오 페이지
+router.post('/getSubscriptionVideos', (req, res) => {
+    
+    //자신의 아이디를 가지고 구독하는 사람을 찾는다.
+    Subscriber.find({ userFrom: req.body.userFrom })
+    .exec((err, subscriberInfo) => {
+        if(err) return res.status(400).send(err)
 
+        let subscribedUser = [];  
+
+        subscriberInfo.map((subscriber, i) => {
+            subscribedUser.push(subscriber.userTo);
+        })
+
+        //찾은 사람의 모든 비디오를 가져온다.
+        Video.find({ writer: { $in: subscribedUser }}) //여러명이라서 req.body. 사용 불가
+        .populate('writer')
+        .exec((err, videos) => {
+            if(err) return res.status(400).send(err);
+            res.status(200).json({ success: true, videos })
+        })
+
+    })
+
+    
+})
 
 
 
