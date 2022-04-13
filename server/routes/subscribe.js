@@ -37,6 +37,31 @@ router.post('/subscribed', (req, res) => {
 })
 
 
+//3. 이미 구독중이라면 취소
+router.post('/unSubscribe', (req, res) => {
+
+    Subscriber.findOneAndDelete({ userTo: req.body.userTo, userFrom: req.body.userFrom })
+    .exec((err, doc) => {
+        if(err) return res.status(400).json({ success: false, err })
+        res.status(200).json({ success: true, doc })
+    })
+})
+
+
+//4.구독하기
+router.post('/subscribe', (req, res) => {
+
+    const subscribe = new Subscriber(req.body) //모든 userTo, userFrom 정보 가져오기
+    
+    subscribe.save((err, doc) => {
+        if(err) return res.json({ success: false, err })
+        res.status(200).json({ success: true })
+    })
+})
+
+
+
+
 
 
 

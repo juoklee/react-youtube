@@ -4,8 +4,8 @@ import Axios from 'axios'
 
 function Subscribe(props) {
 
-    const [SubscribeNumber, setSubscribeNumber] = useState(0)
-    const [Subscribed, setSubscribed] = useState(false)
+    const [SubscribeNumber, setSubscribeNumber] = useState(0) //구독자 수
+    const [Subscribed, setSubscribed] = useState(false) //구독 상태
 
 
     useEffect(() => {
@@ -20,8 +20,6 @@ function Subscribe(props) {
                 alert('구독자 수 정보를 받아오지 못했습니다.')
             }
         })
-
-
 
         let subscribedVariable = { userTo: props.userTo, userFrom: localStorage.getItem('userId') }
 
@@ -39,6 +37,38 @@ function Subscribe(props) {
     }, [])
 
 
+    //button onClick-{onSubscribe}
+    const onSubscribe = () => {
+
+        let subscribedVariable = {
+            userTo: props.userTo,
+            userFrom: props.userFrom
+        }
+
+        if(Subscribed) { //이미 구독중이라면 취소를
+            Axios.post('/api/subscribe/unSubscribe', subscribedVariable)
+            .then(response => {
+                if(response.data.success) {
+                    setSubscribeNumber(SubscribeNumber-1) //구독자 수 -1
+                    setSubscribed(!Subscribed) //구독 정보를 구독 중으로
+                } else {
+                    alert('구독 취소하는 데 실패했습니다.')
+                }
+            })
+
+        }else { //아직 구독중이 아니라면 구독을
+            Axios.post('/api/subscribe/subscribe', subscribedVariable)
+            .then(response => {
+                if(response.data.success) {
+                    setSubscribeNumber(SubscribeNumber+1) //구독자 수 +1
+                    setSubscribed(!Subscribed) //구독 정보를 구독 취소로
+                } else {
+                    alert('구독하는 데 실패했습니다.')
+                }
+            })
+        }
+    }
+
 
 
 
@@ -50,7 +80,7 @@ function Subscribe(props) {
                 borderRadius: '4px', color: 'white',
                 padding: '10px 16px', fontWeight: '500', fontSize: '1rem', textTransform: 'uppercase'
             }}
-            onClick
+            onClick={onSubscribe}
         >
             {SubscribeNumber} {Subscribed ? 'Subscribed' : 'Subscribe'} 
         </button>
