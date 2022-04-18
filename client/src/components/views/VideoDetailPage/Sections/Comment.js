@@ -1,6 +1,7 @@
 import Axios from 'axios'
 import React, {useState} from 'react'
 import { useSelector } from 'react-redux';
+import SingleComment from './SingleComment';
 
 function Comment(props) {
 
@@ -38,6 +39,14 @@ function Comment(props) {
         <br />
         <p> Replies</p>
         <hr />
+
+        {props.commentLists && props.commentLists.map((comment, index) => (
+            (!comment.responseTo && 
+                <SingleComment comment={comment} postId={videoId}/>
+            )
+        ))}
+        
+
 
 
         <form style={{ display: 'flex' }} onSubmit={onSubmit} >

@@ -13,6 +13,8 @@ router.post('/saveComment', (req, res) => {
 
     comment.save(( err, comment) => { //DB에 저장
         if(err) return res.json({ success: false, err })
+
+
         Comment.find({ '_id' : comment._id })
         .populate('writer')
         .exec((err, result) => {
@@ -24,6 +26,17 @@ router.post('/saveComment', (req, res) => {
       
 })
 
+//2. 댓글 가져오기
+router.post('/getComments', (req, res) => {
+
+    Comment.find({ "postId": req.body.videoId })
+    .populate('writer')
+    .exec(( err, comments) => {
+        if(err) return res.status(400).send(err)
+        res.status(200).json({ success: true, comments })
+    })
+
+})
 
 
 
