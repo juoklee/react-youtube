@@ -8,7 +8,7 @@ function SingleComment(props) {
     const user = useSelector(state => state.user)
 
     const [OpenReply, setOpenReply] = useState(false)
-    const [CommentValue, setCommentValue] = useState()
+    const [CommentValue, setCommentValue] = useState("")
 
     const onClickReplyOpen = () => {
         setOpenReply(!OpenReply)
@@ -31,7 +31,9 @@ function SingleComment(props) {
         Axios.post('/api/comment/saveComment', variables)
         .then(response => {
             if(response.data.success) {
-                console.log(response.data.result)
+                console.log(response.data)
+                setOpenReply(!OpenReply)
+                setCommentValue("")
             } else {
                 alert('커멘트를 저장하지 못했습니다.')
             }
@@ -48,8 +50,17 @@ function SingleComment(props) {
             <Comment
                 actions={actions}
                 author={props.comment.writer.name}
-                avatar={<Avatar src={props.comment.writer.image} alt />}
-                content={ <p>{props.comment.content}</p>}
+                avatar={
+                    <Avatar 
+                        src={props.comment.writer.image} 
+                        alt 
+                    />
+                }
+                content={ 
+                    <p>
+                        {props.comment.content}
+                    </p>
+                }
             />
 
             {OpenReply && 

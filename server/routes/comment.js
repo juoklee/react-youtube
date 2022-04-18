@@ -11,7 +11,7 @@ const { Comment } = require('../models/Comment');
 router.post('/saveComment', (req, res) => {
     const comment = new Comment(req.body) // comment 모든 정보 가져오기
 
-    comment.save(( err, comment) => { //DB에 저장
+    comment.save((err, comment) => { //DB에 저장
         if(err) return res.json({ success: false, err })
 
 
