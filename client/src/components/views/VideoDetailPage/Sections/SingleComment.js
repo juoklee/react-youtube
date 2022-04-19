@@ -15,7 +15,7 @@ function SingleComment(props) {
     }
 
     const onHandleChange = (e) => {
-        setCommentValue(e.currentTarget.CommentValue)
+        setCommentValue(e.currentTarget.value)
     }
 
     const onSubmit = (e) => {
@@ -32,8 +32,8 @@ function SingleComment(props) {
         .then(response => {
             if(response.data.success) {
                 console.log(response.data.result)
-                
                 setCommentValue("")
+                setOpenReply(!OpenReply)
                 props.refreshFunction(response.data.result)
             } else {
                 alert('커멘트를 저장하지 못했습니다.')
@@ -54,7 +54,7 @@ function SingleComment(props) {
                 avatar={
                     <Avatar 
                         src={props.comment.writer.image} 
-                        alt 
+                        alt="image"
                     />
                 }
                 content={ 

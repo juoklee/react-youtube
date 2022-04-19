@@ -1,16 +1,16 @@
-import React, {useState} from 'react'
+import React, { useState } from 'react'
 import Axios from 'axios'
 import { useSelector } from 'react-redux';
 import SingleComment from './SingleComment';
+import ReplyComment from './ReplyComment';
 
 function Comment(props) {
 
     const user = useSelector(state => state.user)
-    const videoId = props.postId
-    const [commentValue, setcommentValue] = useState("")
+    const [Comment, setComment] = useState("")
 
     const handleClick = (e) => {
-        setcommentValue(e.currentTarget.value)
+        setComment(e.currentTarget.value)
     }
 
     //기본: refresh
@@ -18,17 +18,16 @@ function Comment(props) {
         e.preventDefault() //refresh 방지
 
         const variables = {
-            content: commentValue,
+            content: Comment,
             writer: user.userData._id,
-            postId: videoId
+            postId: props.postId
         }
 
         Axios.post('/api/comment/saveComment', variables)
         .then(response => {
             if(response.data.success) {
                 console.log(response.data.result)
-                
-                setcommentValue("")
+                setComment("")
                 props.refreshFunction(response.data.result)
             } else {
                 alert('커멘트를 저장하지 못했습니다.')
@@ -45,8 +44,11 @@ function Comment(props) {
 
         {props.commentLists && props.commentLists.map((comment, index) => (
             (!comment.responseTo && 
-                <SingleComment refreshFunction={props.refreshFunction}  comment={comment} postId={videoId}/>
-            )
+                <React.Fragment>
+                    <SingleComment refreshFunction={props.refreshFunction}  comment={comment} postId={props.postId} />
+                    <ReplyComment refreshFunction={props.refreshFunction} parentCommentId={comment._id} postId={props.postId} commentLists={props.commentLists}/>
+                </React.Fragment>
+                )
         ))}
         
 
@@ -56,7 +58,7 @@ function Comment(props) {
             <textarea
                 style={{ width: '100%', borderRadius: '5px' }}
                 onChange={handleClick}
-                value={commentValue}
+                value={setComment}
                 placeholder="코멘트를 작성해 주세요"
             />
             <br/>
