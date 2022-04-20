@@ -8,6 +8,7 @@ function ReplyComment(props) {
 
     useEffect(()=> {
         
+        //대댓글 개수
         let commentNumber = 0
 
         props.commentLists.map((comment) => {
