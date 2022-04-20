@@ -1,10 +1,10 @@
 import React, { useState } from 'react'
-import Axios from 'axios'
+import Axios from 'axios';
 import { useSelector } from 'react-redux';
 import SingleComment from './SingleComment';
 import ReplyComment from './ReplyComment';
 
-function Comment(props) {
+function Comments(props) {
 
     const user = useSelector(state => state.user)
     const [Comment, setComment] = useState("")
@@ -26,7 +26,7 @@ function Comment(props) {
         Axios.post('/api/comment/saveComment', variables)
         .then(response => {
             if(response.data.success) {
-                console.log(response.data.result)
+                // console.log(response.data.result)
                 setComment("")
                 props.refreshFunction(response.data.result)
             } else {
@@ -58,7 +58,7 @@ function Comment(props) {
             <textarea
                 style={{ width: '100%', borderRadius: '5px' }}
                 onChange={handleClick}
-                value={setComment}
+                value={Comment}
                 placeholder="코멘트를 작성해 주세요"
             />
             <br/>
@@ -68,4 +68,4 @@ function Comment(props) {
   )
 }
 
-export default Comment
+export default Comments

@@ -22,18 +22,18 @@ function SingleComment(props) {
         e.preventDefault();
         
         const variables = {
-            content: CommentValue,
             writer: user.userData._id,
             postId: props.postId,
-            responseTo: props.comment._id
+            responseTo: props.comment._id,
+            content: CommentValue
         }
 
         Axios.post('/api/comment/saveComment', variables)
         .then(response => {
             if(response.data.success) {
-                console.log(response.data.result)
-                setCommentValue("")
-                setOpenReply(!OpenReply)
+                // console.log(response.data.result)
+                setCommentValue("") //댓글 단 후 빈공간으로
+                setOpenReply(!OpenReply) // 댓글 단 후 열려있는 댓글창 닫기
                 props.refreshFunction(response.data.result)
             } else {
                 alert('커멘트를 저장하지 못했습니다.')
@@ -62,7 +62,7 @@ function SingleComment(props) {
                         {props.comment.content}
                     </p>
                 }
-            />
+            ></Comment>
 
             {OpenReply && 
                 <form style={{ display: 'flex' }} onSubmit={onSubmit} >

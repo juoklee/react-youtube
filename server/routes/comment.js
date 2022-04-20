@@ -29,7 +29,7 @@ router.post('/saveComment', (req, res) => {
 //2. 댓글 가져오기
 router.post('/getComments', (req, res) => {
 
-    Comment.find({ "postId": req.body.videoId })
+    Comment.find({ 'postId': req.body.videoId })
     .populate('writer')
     .exec((err, comments) => {
         if(err) return res.status(400).send(err)
